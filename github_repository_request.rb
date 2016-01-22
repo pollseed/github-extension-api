@@ -2,9 +2,8 @@ require 'uri'
 require 'net/http'
 require 'json'
 
-def request(lang)
-  uri = URI.parse("https://api.github.com/search/repositories?q=language:#{lang}&sort=stars&order=desc")
-  response = Net::HTTP.get_response(uri)
+def find_github_repository_by_lang(lang)
+  response = find_get_json("https://api.github.com/search/repositories?q=language:#{lang}&sort=stars&order=desc")
 
   if '200' == response.code
     json_arr = JSON.parse(response.body)
@@ -21,5 +20,26 @@ def request(lang)
   end
 end
 
-argv = ARGV
-request(argv[0])
+def find_stackoverflow_questions_by_tag(tag)
+  response = find_get_json("https://api.stackexchange.com/2.2/questions?page=1&pagesize=100&order=desc&sort=votes&tagged=#{tag}&site=ja.stackoverflow&filter=withbody")
+
+  if '200' == response.code
+    json_arr = JSON.parse(response.body)
+    p json_arr
+  else
+    p "error: #{response.code}, #{response.message}"
+  end
+end
+
+def find_get_json(uri_format)
+  uri = URI.parse(uri_format)
+  Net::HTTP.get_response(uri)
+end
+
+def main
+  argv = ARGV
+  find_github_repository_by_lang(argv[0])
+  find_stackoverflow_questions_by_tag(argv[0])
+end
+
+main
