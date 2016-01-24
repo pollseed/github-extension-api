@@ -1,18 +1,46 @@
+require 'bundler/setup'
 require 'json'
 require 'httpclient'
+require 'active_record'
+require 'yaml'
+
+ActiveRecord::Base.configurations = YAML.load_file('database.yml')
+ActiveRecord::Base.establish_connection(:development)
+
+class ClawlGithubRepository < ActiveRecord::Base
+  def self.update_duplicate
+    create_table :on_duplicates do |t|
+    end
+  end
+end
+
+class HTTP_STATUS
+  OK = 200
+end
 
 module FindApi
   def find_github_repository_by_lang lang
     response = find_get_json "https://api.github.com/search/repositories?q=language:#{lang}&sort=stars&order=desc"
 
-    if 200 == response.status
+    if HTTP_STATUS::OK == response.status
       json_arr = JSON.parse response.body
       json_arr.each do |key,value|
         if 'items' == key
           value.each do |json|
-            #p "url: #{json['clone_url']}, score: #{json['score']}, stargazers_count: #{json['stargazers_count']}, forks_count: #{json['forks_count']}, created_at: #{json['created_at']}, updated_at: #{json['updated_at']}"
-            p "#{json['clone_url']},#{json['score']},#{json['stargazers_count']},#{json['forks_count']},#{json['created_at']},#{json['updated_at']}"
-          end
+	          now = Time.now
+	          ct = ClawlGithubRepository.where(
+	            github_id: json['id'],
+	            language: lang).take
+	          if ct.nil?
+	            ct = ClawlGithubRepository.create(
+	            github_id: json['id'],
+	            language: lang,
+	            response: json)
+	          else
+              ct.response = json
+	            ct.save
+            end
+	        end
         end
       end
     else
@@ -23,7 +51,7 @@ module FindApi
   def find_stackoverflow_questions_by_tag tag
     response = find_get_json "https://api.stackexchange.com/2.2/questions?page=1&pagesize=100&order=desc&sort=votes&tagged=#{tag}&site=ja.stackoverflow&filter=withbody"
 
-    if 200 == response.status
+    if HTTP_STATUS::OK == response.status
       json_arr = JSON.parse(response.body, quirks_mode: true)
       p json_arr
     else
