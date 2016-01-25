@@ -27,20 +27,20 @@ module FindApi
       json_arr.each do |key,value|
         if 'items' == key
           value.each do |json|
-	          now = Time.now
-	          ct = ClawlGithubRepository.where(
-	            github_id: json['id'],
-	            language: lang).take
-	          if ct.nil?
-	            ct = ClawlGithubRepository.create(
-	            github_id: json['id'],
-	            language: lang,
-	            response: json)
-	          else
+            now = Time.now
+            ct = ClawlGithubRepository.where(
+              github_id: json['id'],
+              language: lang).take
+            if ct.nil?
+              ct = ClawlGithubRepository.create(
+              github_id: json['id'],
+              language: lang,
+              response: json)
+            else
               ct.response = json
-	            ct.save
+              ct.save
             end
-	        end
+          end
         end
       end
     else
