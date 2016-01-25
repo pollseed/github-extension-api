@@ -26,19 +26,21 @@ module FindApi
       json_arr = JSON.parse response.body
       json_arr.each do |key,value|
         if 'items' == key
-          value.each do |json|
-	          now = Time.now
+          value.each_with_index do |json,i|
 	          ct = ClawlGithubRepository.where(
 	            github_id: json['id'],
 	            language: lang).take
+            i+=1
 	          if ct.nil?
 	            ct = ClawlGithubRepository.create(
 	            github_id: json['id'],
 	            language: lang,
 	            response: json)
+              p "success: No.#{i} insert github_id=#{json['id']}"
 	          else
               ct.response = json
 	            ct.save
+              p "success: No.#{i} update github_id=#{json['id']}"
             end
 	        end
         end
