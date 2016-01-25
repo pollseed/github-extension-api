@@ -19,8 +19,8 @@ class HTTP_STATUS
 end
 
 module FindApi
-  def find_github_repository_by_lang lang
-    response = find_get_json "https://api.github.com/search/repositories?q=language:#{lang}&sort=stars&order=desc"
+  def find_github_repository_by_lang (lang,page=1,per_page=100)
+    response = find_get_json "https://api.github.com/search/repositories?q=language:#{lang}&sort=stars&order=desc&page=#{page}&per_page=#{per_page}"
 
     if HTTP_STATUS::OK == response.status
       json_arr = JSON.parse response.body
@@ -35,9 +35,11 @@ module FindApi
 	            ct = ClawlGithubRepository.create(
 	            github_id: json['id'],
 	            language: lang,
-	            response: json)
+	            response: json,
+              stargazers_count: json['stargazers_count'])
               p "success: No.#{i} insert github_id=#{json['id']}"
 	          else
+              ct.stargazers_count = json['stargazers_count']
               ct.response = json
 	            ct.save
               p "success: No.#{i} update github_id=#{json['id']}"
@@ -72,7 +74,7 @@ class Request
 
   def main
     argv = ARGV
-    find_github_repository_by_lang argv[0]
+    find_github_repository_by_lang(argv[0],argv[1],argv[2])
     #find_stackoverflow_questions_by_tag argv[0]
   end
 end
