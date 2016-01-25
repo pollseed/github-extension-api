@@ -42,7 +42,7 @@ module FindApi
 	            ct.save
               p "success: No.#{i} update github_id=#{json['id']}"
             end
-	        end
+          end
         end
       end
     else
