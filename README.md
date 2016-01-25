@@ -1,6 +1,13 @@
 # big_data_related
 The Script for Getting of much infomation technology and more bigdata.
 
+## Recommend of your environment or version
+* Ruby 2.3.0
+* MySQL 5.7.10
+
+## To Use this technology for this library.
+* GitHub API v3.0
+
 ## First, to bundle on this repository.
 
 ```.sh
