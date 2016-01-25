@@ -1,17 +1,18 @@
 # big_data_related
+The Script for Getting of much infomation technology and more bigdata.
 
-## bundle install
+## First, to bundle on this repository.
 
 ```.sh
 bundle install --path vendor/bundler
 ```
 
-## DB
+## Second, to construct database.
 
-1. settings mysql
-2. test.sql
+1. Construct MySQL.
+2. Run for `test.sql`
 
-## Run
+## Finally, to launch script file.
 
 ```.sh
 ruby request.rb java 1 100
