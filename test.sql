@@ -1,4 +1,4 @@
-CREATE SCHEMA `new_schema` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA `big_data` DEFAULT CHARACTER SET utf8 ;
 CREATE TABLE `clawl_github_repositories` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `github_id` bigint(20) NOT NULL,
