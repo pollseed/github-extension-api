@@ -20,7 +20,9 @@ end
 
 module FindApi
   def find_github_repository_by_lang (lang,page=1,per_page=100)
-    response = find_get_json "https://api.github.com/search/repositories?q=language:#{lang}&sort=stars&order=desc&page=#{page}&per_page=#{per_page}"
+    url = "https://api.github.com/search/repositories?q=language:#{lang}&sort=stars&order=desc&page=#{page}&per_page=#{per_page}"
+    p url
+    response = find_get_json url
 
     if HTTP_STATUS::OK == response.status
       json_arr = JSON.parse response.body
@@ -72,11 +74,16 @@ end
 class Request
   include FindApi
 
-  def main
+  def argv_run
     argv = ARGV
-    find_github_repository_by_lang(argv[0],argv[1],argv[2])
+    p "language: #{argv[0]}"
+    p "page: #{argv[1]}"
+    p "per_page: #{argv[2]}"
+    run(argv[0],argv[1],argv[2])
     #find_stackoverflow_questions_by_tag argv[0]
   end
-end
 
-Request.new.main
+  def run(language, page, per_page)
+    find_github_repository_by_lang(language,page,per_page)
+  end
+end
