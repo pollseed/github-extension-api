@@ -19,8 +19,11 @@ class HTTP_STATUS
 end
 
 module FindApi
+  CLIENT_ID = ENV['GITHUB_API_CLIENT_ID']
+  CLIENT_SECRET = ENV['GITHUB_API_CLIENT_SECRET']
+
   def find_github_repository_by_lang (lang,page=1,per_page=100)
-    url = "https://api.github.com/search/repositories?q=language:#{lang}&sort=stars&order=desc&page=#{page}&per_page=#{per_page}"
+    url = "https://api.github.com/search/repositories?q=language:#{lang}&sort=stars&order=desc&page=#{page}&per_page=#{per_page}&client_id=#{CLIENT_ID}&client_secret=#{CLIENT_SECRET}"
     p url
     response = find_get_json url
 
