@@ -6,7 +6,7 @@ The Script for Getting of much infomation technology and more bigdata.
 * MySQL 5.7.10
 
 ## To Use this technology for this library.
-* GitHub API v3.0
+* GitHub API v3.0 (Required OAuth)
 
 ## First, to bundle on this repository.
 
@@ -20,6 +20,16 @@ bundle install --path vendor/bundler
 2. Run for `test.sql`
 
 ## Finally, to launch script file.
+
+
+### Get more than 10000 of programing languages
+
+```.sh
+ruby batch.rb
+```
+
+### Get indivisually
+Need to modify request.rb.
 
 ```.sh
 ruby request.rb java 1 100
