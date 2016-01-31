@@ -11,7 +11,7 @@ CREATE TABLE `clawl_github_repositories` (
   `owner_followers` bigint(20) NOT NULL DEFAULT '0',
   `owner_following` bigint(20) NOT NULL DEFAULT '0',
   `owner_created_at` datetime NOT NULL,
-  `owner_updated_at` datetime DEFAULT NULL,
+  `owner_updated_at` datetime NOT NULL,
   `response` text NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
