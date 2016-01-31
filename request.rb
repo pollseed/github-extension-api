@@ -1,22 +1,8 @@
 require 'bundler/setup'
 require 'json'
 require 'httpclient'
-require 'active_record'
-require 'yaml'
-
-ActiveRecord::Base.configurations = YAML.load_file('database.yml')
-ActiveRecord::Base.establish_connection(:development)
-
-class ClawlGithubRepository < ActiveRecord::Base
-  def self.update_duplicate
-    create_table :on_duplicates do |t|
-    end
-  end
-end
-
-class HTTP_STATUS
-  OK = 200
-end
+require './constants.rb'
+require './models'
 
 module FindApi
   CLIENT_ID = ENV['GITHUB_API_CLIENT_ID']
@@ -41,10 +27,12 @@ module FindApi
 	            github_id: json['id'],
 	            language: lang,
 	            response: json,
-              stargazers_count: json['stargazers_count'])
+              stargazers_count: json['stargazers_count'],
+              forks_count: json['forks_count'])
               p "success: No.#{i} insert github_id=#{json['id']}"
 	          else
               ct.stargazers_count = json['stargazers_count']
+              ct.forks_count = json['forks_count']
               ct.response = json
 	            ct.save
               p "success: No.#{i} update github_id=#{json['id']}"
@@ -90,3 +78,5 @@ class Request
     find_github_repository_by_lang(language,page,per_page)
   end
 end
+
+Request.new.argv_run
