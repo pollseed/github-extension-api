@@ -23,13 +23,15 @@ bundle install --path vendor/bundler
 
 
 ### Get more than 10000 of programing languages
+* To take 3 hours and half hours
+* 14029 items (2016/2/2 time)
 
 ```.sh
 ruby batch.rb
 ```
 
 ### Get indivisually
-Need to modify request.rb.
+Need to add `Requesu.new.argv_run` to request.rb.
 
 ```.sh
 ruby request.rb java 1 100

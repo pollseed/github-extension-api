@@ -9,33 +9,50 @@ module FindApi
   CLIENT_SECRET = ENV['GITHUB_API_CLIENT_SECRET']
 
   def find_github_repository_by_lang (lang,page=1,per_page=100)
-    url = "https://api.github.com/search/repositories?q=language:#{lang}&sort=stars&order=desc&page=#{page}&per_page=#{per_page}&client_id=#{CLIENT_ID}&client_secret=#{CLIENT_SECRET}"
-    p url
-    response = find_get_json url
+    repository_url = sprintf(GITHUB::REPOSITORY_URL, lang, page, per_page, CLIENT_ID, CLIENT_SECRET)
+    response = find_get_json repository_url
 
     if HTTP_STATUS::OK == response.status
       json_arr = JSON.parse response.body
       json_arr.each do |key,value|
         if 'items' == key
           value.each_with_index do |json,i|
-	          ct = ClawlGithubRepository.where(
-	            github_id: json['id'],
-	            language: lang).take
-            i+=1
-	          if ct.nil?
-	            ct = ClawlGithubRepository.create(
-	            github_id: json['id'],
-	            language: lang,
-	            response: json,
-              stargazers_count: json['stargazers_count'],
-              forks_count: json['forks_count'])
-              p "success: No.#{i} insert github_id=#{json['id']}"
-	          else
-              ct.stargazers_count = json['stargazers_count']
-              ct.forks_count = json['forks_count']
-              ct.response = json
-	            ct.save
-              p "success: No.#{i} update github_id=#{json['id']}"
+            user_url = sprintf(GITHUB::USER_URL, json['owner']['login'], CLIENT_ID, CLIENT_SECRET)
+            user_info = find_get_json user_url
+            if HTTP_STATUS::OK == user_info.status
+              user_json = JSON.parse user_info.body
+              ct = ClawlGithubRepository.where(
+                github_id: json['id'],
+                language: lang).take
+              i+=1
+              if ct.nil?
+                ct = ClawlGithubRepository.create(
+                github_id: json['id'],
+                language: lang,
+                stargazers_count: json['stargazers_count'],
+                forks_count: json['forks_count'],
+                commit_created_at: json['created_at'],
+                commit_updated_at: json['updated_at'],
+                owner_id: user_json['id'],
+                owner_followers: user_json['followers'],
+                owner_following: user_json['following'],
+                owner_created_at: user_json['created_at'],
+                owner_updated_at: user_json['updated_at'],
+                response: json)
+                p "success: No.#{i} insert github_id=#{json['id']}, lang=#{lang}"
+              else
+                ct.stargazers_count = json['stargazers_count']
+                ct.forks_count = json['forks_count']
+                ct.commit_updated_at = json['updated_at']
+                ct.owner_followers = user_json['followers']
+                ct.owner_following = user_json['following']
+                ct.owner_updated_at = user_json['updated_at']
+                ct.response = json
+                ct.save
+                p "success: No.#{i} update github_id=#{json['id']}, lang=#{lang}"
+              end
+            else
+              p "error: #{user_info.status}, #{user_info.body}"
             end
           end
         end
@@ -79,4 +96,4 @@ class Request
   end
 end
 
-Request.new.argv_run
+# Requesu.new.argv_run
