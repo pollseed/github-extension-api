@@ -1,64 +1,34 @@
 require 'bundler/setup'
 require 'json'
 require 'httpclient'
+require 'logger'
 require './constants.rb'
 require './models'
 
 module FindApi
+  LOG = Logger.new(STDOUT)
   CLIENT_ID = ENV['GITHUB_API_CLIENT_ID']
   CLIENT_SECRET = ENV['GITHUB_API_CLIENT_SECRET']
 
   def find_github_repository_by_lang (lang,page=1,per_page=100)
-    repository_url = sprintf(GITHUB::REPOSITORY_URL, lang, page, per_page, CLIENT_ID, CLIENT_SECRET)
-    response = find_get_json repository_url
+    response = find_get_json (sprintf(GITHUB::REPOSITORY_URL, lang, page, per_page, CLIENT_ID, CLIENT_SECRET))
 
     if HTTP_STATUS::OK == response.status
-      json_arr = JSON.parse response.body
-      json_arr.each do |key,value|
-        if 'items' == key
+      (JSON.parse response.body).each do |key,value|
+        if GITHUB::JSON_KEY_ITEMS == key
           value.each_with_index do |json,i|
-            user_url = sprintf(GITHUB::USER_URL, json['owner']['login'], CLIENT_ID, CLIENT_SECRET)
-            user_info = find_get_json user_url
+
+            user_info = find_get_json sprintf(GITHUB::USER_URL, json['owner']['login'], CLIENT_ID, CLIENT_SECRET)
             if HTTP_STATUS::OK == user_info.status
-              user_json = JSON.parse user_info.body
-              ct = ClawlGithubRepository.where(
-                github_id: json['id'],
-                language: lang).take
-              i+=1
-              if ct.nil?
-                ct = ClawlGithubRepository.create(
-                github_id: json['id'],
-                language: lang,
-                stargazers_count: json['stargazers_count'],
-                forks_count: json['forks_count'],
-                commit_created_at: json['created_at'],
-                commit_updated_at: json['updated_at'],
-                owner_id: user_json['id'],
-                owner_followers: user_json['followers'],
-                owner_following: user_json['following'],
-                owner_created_at: user_json['created_at'],
-                owner_updated_at: user_json['updated_at'],
-                response: json)
-                p "success: No.#{i} insert github_id=#{json['id']}, lang=#{lang}"
-              else
-                ct.stargazers_count = json['stargazers_count']
-                ct.forks_count = json['forks_count']
-                ct.commit_updated_at = json['updated_at']
-                ct.owner_followers = user_json['followers']
-                ct.owner_following = user_json['following']
-                ct.owner_updated_at = user_json['updated_at']
-                ct.response = json
-                ct.save
-                p "success: No.#{i} update github_id=#{json['id']}, lang=#{lang}"
-              end
+              ClawlGithubRepository.register(json, lang, (JSON.parse user_info.body), i+=1)
             else
-              p "error: #{user_info.status}, #{user_info.body}"
+              LOG.error("#{user_info.status}, #{user_info.body}")
             end
           end
         end
       end
     else
-      p "error: #{response.status}, #{response.body}"
+      LOG.error("#{response.status}, #{response.body}")
     end
   end
 
@@ -67,9 +37,9 @@ module FindApi
 
     if HTTP_STATUS::OK == response.status
       json_arr = JSON.parse(response.body, quirks_mode: true)
-      p json_arr
+      LOG.info(json_arr)
     else
-      p "error: #{response.status}, #{response.body}"
+      LOG.error("#{response.status}, #{response.body}")
     end
   end
 
@@ -84,9 +54,9 @@ class Request
 
   def argv_run
     argv = ARGV
-    p "language: #{argv[0]}"
-    p "page: #{argv[1]}"
-    p "per_page: #{argv[2]}"
+    LOG.info("language: #{argv[0]}")
+    LOG.info("page: #{argv[1]}")
+    LOG.info("per_page: #{argv[2]}")
     run(argv[0],argv[1],argv[2])
     #find_stackoverflow_questions_by_tag argv[0]
   end
@@ -96,4 +66,4 @@ class Request
   end
 end
 
-# Requesu.new.argv_run
+# Request.new.argv_run

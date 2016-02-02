@@ -5,7 +5,7 @@ class Batch
   def run
     req = Request.new
     Languages.constants.each{|c|
-      p "request language #{c}"
+      LOG.info("request language #{c}")
       lang = Languages.const_get c
       range = 1..10
       range.each{|n|
