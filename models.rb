@@ -18,7 +18,7 @@ class ClawlGithubRepository < ActiveRecord::Base
   end
 
   private
-  def self.reate(json, lang, user_json, i)
+  def self.create(json, lang, user_json, i)
     ClawlGithubRepository.create(
       github_id: json['id'],
       language: lang,
