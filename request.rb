@@ -1,10 +1,12 @@
 require 'bundler/setup'
 require 'json'
 require 'httpclient'
+require 'logger'
 require './constants.rb'
 require './models'
 
 module FindApi
+  LOG = Logger.new(STDOUT)
   CLIENT_ID = ENV['GITHUB_API_CLIENT_ID']
   CLIENT_SECRET = ENV['GITHUB_API_CLIENT_SECRET']
 
@@ -13,20 +15,20 @@ module FindApi
 
     if HTTP_STATUS::OK == response.status
       (JSON.parse response.body).each do |key,value|
-        if 'items' == key
+        if GITHUB::JSON_KEY_ITEMS == key
           value.each_with_index do |json,i|
 
             user_info = find_get_json sprintf(GITHUB::USER_URL, json['owner']['login'], CLIENT_ID, CLIENT_SECRET)
             if HTTP_STATUS::OK == user_info.status
-                          ClawlGithubRepository.new.register(json, lang, (JSON.parse user_info.body), i+=1)
+              ClawlGithubRepository.register(json, lang, (JSON.parse user_info.body), i+=1)
             else
-              p "error: #{user_info.status}, #{user_info.body}"
+              LOG.error("#{user_info.status}, #{user_info.body}")
             end
           end
         end
       end
     else
-      p "error: #{response.status}, #{response.body}"
+      LOG.error("#{response.status}, #{response.body}")
     end
   end
 
@@ -35,9 +37,9 @@ module FindApi
 
     if HTTP_STATUS::OK == response.status
       json_arr = JSON.parse(response.body, quirks_mode: true)
-      p json_arr
+      LOG.info(json_arr)
     else
-      p "error: #{response.status}, #{response.body}"
+      LOG.error("#{response.status}, #{response.body}")
     end
   end
 
@@ -52,9 +54,9 @@ class Request
 
   def argv_run
     argv = ARGV
-    p "language: #{argv[0]}"
-    p "page: #{argv[1]}"
-    p "per_page: #{argv[2]}"
+    LOG.info("language: #{argv[0]}")
+    LOG.info("page: #{argv[1]}")
+    LOG.info("per_page: #{argv[2]}")
     run(argv[0],argv[1],argv[2])
     #find_stackoverflow_questions_by_tag argv[0]
   end
@@ -64,4 +66,4 @@ class Request
   end
 end
 
-# Requesu.new.argv_run
+Request.new.argv_run
