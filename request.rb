@@ -9,48 +9,16 @@ module FindApi
   CLIENT_SECRET = ENV['GITHUB_API_CLIENT_SECRET']
 
   def find_github_repository_by_lang (lang,page=1,per_page=100)
-    repository_url = sprintf(GITHUB::REPOSITORY_URL, lang, page, per_page, CLIENT_ID, CLIENT_SECRET)
-    response = find_get_json repository_url
+    response = find_get_json (sprintf(GITHUB::REPOSITORY_URL, lang, page, per_page, CLIENT_ID, CLIENT_SECRET))
 
     if HTTP_STATUS::OK == response.status
-      json_arr = JSON.parse response.body
-      json_arr.each do |key,value|
+      (JSON.parse response.body).each do |key,value|
         if 'items' == key
           value.each_with_index do |json,i|
-            user_url = sprintf(GITHUB::USER_URL, json['owner']['login'], CLIENT_ID, CLIENT_SECRET)
-            user_info = find_get_json user_url
+
+            user_info = find_get_json sprintf(GITHUB::USER_URL, json['owner']['login'], CLIENT_ID, CLIENT_SECRET)
             if HTTP_STATUS::OK == user_info.status
-              user_json = JSON.parse user_info.body
-              ct = ClawlGithubRepository.where(
-                github_id: json['id'],
-                language: lang).take
-              i+=1
-              if ct.nil?
-                ct = ClawlGithubRepository.create(
-                github_id: json['id'],
-                language: lang,
-                stargazers_count: json['stargazers_count'],
-                forks_count: json['forks_count'],
-                commit_created_at: json['created_at'],
-                commit_updated_at: json['updated_at'],
-                owner_id: user_json['id'],
-                owner_followers: user_json['followers'],
-                owner_following: user_json['following'],
-                owner_created_at: user_json['created_at'],
-                owner_updated_at: user_json['updated_at'],
-                response: json)
-                p "success: No.#{i} insert github_id=#{json['id']}, lang=#{lang}"
-              else
-                ct.stargazers_count = json['stargazers_count']
-                ct.forks_count = json['forks_count']
-                ct.commit_updated_at = json['updated_at']
-                ct.owner_followers = user_json['followers']
-                ct.owner_following = user_json['following']
-                ct.owner_updated_at = user_json['updated_at']
-                ct.response = json
-                ct.save
-                p "success: No.#{i} update github_id=#{json['id']}, lang=#{lang}"
-              end
+                    register(json, lang, (JSON.parse user_info.body), i+=1)
             else
               p "error: #{user_info.status}, #{user_info.body}"
             end
@@ -60,6 +28,44 @@ module FindApi
     else
       p "error: #{response.status}, #{response.body}"
     end
+  end
+
+  def register(json, lang, user_json, i)
+          ct = ClawlGithubRepository.where(github_id: json['id'], language: lang).take,
+          if ct.nil?
+            create(json, lang, user_json, i)
+          else
+            update(ct, json, lang, user_json, i)
+          end
+  end
+
+  def create(json, lang, user_json, i)
+          ClawlGithubRepository.create(
+                  github_id: json['id'],
+                  language: lang,
+                  stargazers_count: json['stargazers_count'],
+                  forks_count: json['forks_count'],
+                  commit_created_at: json['created_at'],
+                  commit_updated_at: json['updated_at'],
+                  owner_id: user_json['id'],
+                  owner_followers: user_json['followers'],
+                  owner_following: user_json['following'],
+                  owner_created_at: user_json['created_at'],
+                  owner_updated_at: user_json['updated_at'],
+                  response: json)
+          p "success: No.#{i} insert github_id=#{json['id']}, lang=#{lang}"
+  end
+
+  def update(ct, json, lang, user_json, i)
+          ct.stargazers_count = json['stargazers_count']
+          ct.forks_count = json['forks_count']
+          ct.commit_updated_at = json['updated_at']
+          ct.owner_followers = user_json['followers']
+          ct.owner_following = user_json['following']
+          ct.owner_updated_at = user_json['updated_at']
+          ct.response = json
+          ct.save
+          p "success: No.#{i} update github_id=#{json['id']}, lang=#{lang}"
   end
 
   def find_stackoverflow_questions_by_tag tag
