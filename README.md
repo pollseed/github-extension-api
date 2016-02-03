@@ -17,7 +17,7 @@ bundle install --path vendor/bundler
 ## Second, to construct database.
 
 1. Construct MySQL.
-2. Run for `test.sql`
+2. Run for [`ddl.sql`](https://github.com/pollseed/big_data_related/blob/master/sql/ddl.sql)
 
 ## Finally, to launch script file.
 
@@ -27,6 +27,7 @@ bundle install --path vendor/bundler
 * 14029 items (2016/2/2 time)
 
 ```.sh
+cd big_data_related/scripts
 ruby batch.rb
 ```
 
