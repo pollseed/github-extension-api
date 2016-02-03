@@ -34,7 +34,12 @@ ruby batch.rb
 ### Get indivisually
 Need to add `Requesu.new.argv_run` to request.rb.
 
+#### Syntax
+`ruby request.rb {language name} {page} {limit}`
+
 ```.sh
+cd big_data_related/scripts
+
 ruby request.rb java 1 100
 ruby request.rb ruby 1 500
 ruby request.rb python 2 50
