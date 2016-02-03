@@ -18,7 +18,7 @@ module FindApi
     if HttpStatus::OK == response.status
       (JSON.parse response.body).each do |key,value|
         if Github::JSON_KEY_ITEMS == key
-          value.each_with_index 1 do |json,i|
+          value.each.with_index(1) do |json,i|
 
             user_info = find_get_json sprintf(Github::USER_URL, json['owner']['login'], CLIENT_ID, CLIENT_SECRET)
             if HttpStatus::OK == user_info.status
@@ -68,4 +68,4 @@ class Request
   end
 end
 
-# Request.new.argv_run
+Request.new.argv_run
