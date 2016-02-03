@@ -8,6 +8,8 @@ ActiveRecord::Base.establish_connection(:development)
 class ClawlGithubRepository < ActiveRecord::Base
   LOG = Logger.new(STDOUT)
 
+  INFO_LOGGER = lambda{|i,json,lang,type| LOG.info("No.#{i} #{type} github_id=#{json['id']}, lang=#{lang}")}
+
   def self.register(json, lang, user_json, i)
     ct = ClawlGithubRepository.where(github_id: json['id'], language: lang).take
     if ct.nil?
@@ -33,7 +35,7 @@ class ClawlGithubRepository < ActiveRecord::Base
       owner_created_at: user_json['created_at'],
       owner_updated_at: user_json['updated_at'],
       response: json)
-    LOG.info("No.#{i} insert github_id=#{json['id']}, lang=#{lang}")
+    INFO_LOGGER.call(i,json,lang,"insert")
   end
 
   def self.update(ct, json, lang, user_json, i)
@@ -46,6 +48,6 @@ class ClawlGithubRepository < ActiveRecord::Base
     ct.owner_updated_at = user_json['updated_at']
     ct.response = json
     ct.save
-    LOG.info("No.#{i} update github_id=#{json['id']}, lang=#{lang}")
+    INFO_LOGGER.call(i,json,lang,"update")
   end
 end
