@@ -10,19 +10,21 @@ module FindApi
   CLIENT_ID = ENV['GITHUB_API_CLIENT_ID']
   CLIENT_SECRET = ENV['GITHUB_API_CLIENT_SECRET']
 
+  ERROR_LOGGER = lambda{|info| LOG.error("#{info.status}, #{info.body}")}
+
   def find_github_repository_by_lang (lang,page=1,per_page=100)
     response = find_get_json (sprintf(Github::REPOSITORY_URL, lang, page, per_page, CLIENT_ID, CLIENT_SECRET))
 
     if HttpStatus::OK == response.status
       (JSON.parse response.body).each do |key,value|
         if Github::JSON_KEY_ITEMS == key
-          value.each_with_index do |json,i|
+          value.each_with_index 1 do |json,i|
 
             user_info = find_get_json sprintf(Github::USER_URL, json['owner']['login'], CLIENT_ID, CLIENT_SECRET)
             if HttpStatus::OK == user_info.status
-              ClawlGithubRepository.register(json, lang, (JSON.parse user_info.body), i+=1)
+              ClawlGithubRepository.register(json, lang, (JSON.parse user_info.body), i)
             else
-              LOG.error("#{user_info.status}, #{user_info.body}")
+              ERROR_LOGGER.call user_info
             end
           end
         end
