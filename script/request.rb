@@ -30,21 +30,11 @@ module FindApi
         end
       end
     else
-      LOG.error("#{response.status}, #{response.body}")
+      ERROR_LOGGER.call response
     end
   end
 
-  def find_stackoverflow_questions_by_tag tag
-    response = find_get_json "https://api.stackexchange.com/2.2/questions?page=1&pagesize=100&order=desc&sort=votes&tagged=#{tag}&site=ja.stackoverflow&filter=withbody"
-
-    if HttpStatus::OK == response.status
-      json_arr = JSON.parse(response.body, quirks_mode: true)
-      LOG.info(json_arr)
-    else
-      LOG.error("#{response.status}, #{response.body}")
-    end
-  end
-
+  private
   def find_get_json uri
     http = HTTPClient.new
     http.get uri
@@ -60,7 +50,6 @@ class Request
     LOG.info("page: #{argv[1]}")
     LOG.info("per_page: #{argv[2]}")
     run(argv[0],argv[1],argv[2])
-    #find_stackoverflow_questions_by_tag argv[0]
   end
 
   def run(language, page, per_page)
@@ -68,4 +57,4 @@ class Request
   end
 end
 
-# Request.new.argv_run
+Request.new.argv_run
