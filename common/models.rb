@@ -29,7 +29,7 @@ class ClawlGithubRepository < ActiveRecord::Base
       owner_id: user_json['id'],
       owner_followers: user_json['followers'],
       owner_following: user_json['following'],
-      owner_type: user_json['type'],
+      owner_type: Github::OWNER_TYPE_ORG == user_json['type'],
       owner_created_at: user_json['created_at'],
       owner_updated_at: user_json['updated_at'],
       response: json)
@@ -42,7 +42,7 @@ class ClawlGithubRepository < ActiveRecord::Base
     ct.commit_updated_at = json['updated_at']
     ct.owner_followers = user_json['followers']
     ct.owner_following = user_json['following']
-    ct.owner_type = user_json['type']
+    ct.owner_type = Github::OWNER_TYPE_ORG == user_json['type']
     ct.owner_updated_at = user_json['updated_at']
     ct.response = json
     ct.save
