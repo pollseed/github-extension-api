@@ -8,6 +8,7 @@ SELECT
     owner_id,
     owner_followers,
     owner_following,
+    organization_flg,
     ROUND((UNIX_TIMESTAMP(owner_updated_at) - UNIX_TIMESTAMP(owner_created_at)) / 86400) AS owner_days,
     CASE language
         WHEN 'c++' THEN 0
