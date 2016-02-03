@@ -11,15 +11,15 @@ module FindApi
   CLIENT_SECRET = ENV['GITHUB_API_CLIENT_SECRET']
 
   def find_github_repository_by_lang (lang,page=1,per_page=100)
-    response = find_get_json (sprintf(GITHUB::REPOSITORY_URL, lang, page, per_page, CLIENT_ID, CLIENT_SECRET))
+    response = find_get_json (sprintf(Github::REPOSITORY_URL, lang, page, per_page, CLIENT_ID, CLIENT_SECRET))
 
-    if HTTP_STATUS::OK == response.status
+    if HttpStatus::OK == response.status
       (JSON.parse response.body).each do |key,value|
-        if GITHUB::JSON_KEY_ITEMS == key
+        if Github::JSON_KEY_ITEMS == key
           value.each_with_index do |json,i|
 
-            user_info = find_get_json sprintf(GITHUB::USER_URL, json['owner']['login'], CLIENT_ID, CLIENT_SECRET)
-            if HTTP_STATUS::OK == user_info.status
+            user_info = find_get_json sprintf(Github::USER_URL, json['owner']['login'], CLIENT_ID, CLIENT_SECRET)
+            if HttpStatus::OK == user_info.status
               ClawlGithubRepository.register(json, lang, (JSON.parse user_info.body), i+=1)
             else
               LOG.error("#{user_info.status}, #{user_info.body}")
@@ -35,7 +35,7 @@ module FindApi
   def find_stackoverflow_questions_by_tag tag
     response = find_get_json "https://api.stackexchange.com/2.2/questions?page=1&pagesize=100&order=desc&sort=votes&tagged=#{tag}&site=ja.stackoverflow&filter=withbody"
 
-    if HTTP_STATUS::OK == response.status
+    if HttpStatus::OK == response.status
       json_arr = JSON.parse(response.body, quirks_mode: true)
       LOG.info(json_arr)
     else
