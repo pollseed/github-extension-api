@@ -24,4 +24,5 @@ module GITHUB
   REPOSITORY_URL = "https://api.github.com/search/repositories?q=language:%s&sort=stars&order=desc&page=%s&per_page=%s&client_id=%s&client_secret=%s".freeze
   USER_URL = "https://api.github.com/users/%s?client_id=%s&client_secret=%s".freeze
   JSON_KEY_ITEMS = "items"
+  OWNER_TYPE_ORG = "Organization"
 end
