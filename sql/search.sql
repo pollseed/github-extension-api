@@ -6,6 +6,7 @@ SELECT
     forks_count,
     ROUND((UNIX_TIMESTAMP(commit_updated_at) - UNIX_TIMESTAMP(commit_created_at)) / 86400) AS commit_days,
     owner_id,
+    github_id,
     owner_followers,
     owner_following,
     organization_flg,
@@ -26,11 +27,18 @@ SELECT
         WHEN 'javascript' THEN 12
         WHEN 'swift' THEN 13
         WHEN 'c#' THEN 14
+        WHEN 'ecma script' THEN 15
+        WHEN 'groovy' THEN 16
+        WHEN 'lua' THEN 17
+        WHEN 'haskell' THEN 18
+        WHEN 'visual basic' THEN 19
+        WHEN 'assembly' THEN 20
+        else 9999
     END AS language
 FROM
     clawl_github_repositories
 ORDER BY language ASC , stargazers_count DESC
-LIMIT 15000;
+LIMIT 30000;
 
 -- data for stargazers_count's count
 SELECT

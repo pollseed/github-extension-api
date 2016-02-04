@@ -15,6 +15,12 @@ module Languages
   BASH = "bash"
   SCALA = "scala"
   LISP = "lisp"
+  ECMA_SCRIPT = "ecma script"
+  GROOVY = "groovy"
+  LUA = "lua"
+  HASKELL = "haskell"
+  VISUAL_BASIC = "visual basic"
+  ASSEMBLY = "assembly"
 end
 
 module HttpStatus
