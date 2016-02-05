@@ -27,6 +27,7 @@ class ClawlGithubRepository < ActiveRecord::Base
   def self.save
     ClawlGithubRepository.create(
       github_id: @json['id'],
+      name: @json['name'],
       language: @lang,
       stargazers_count: @json['stargazers_count'],
       forks_count: @json['forks_count'],
@@ -43,6 +44,7 @@ class ClawlGithubRepository < ActiveRecord::Base
   end
 
   def self.update
+    @ct.name = @json['name']
     @ct.stargazers_count = @json['stargazers_count']
     @ct.forks_count = @json['forks_count']
     @ct.commit_updated_at = @json['updated_at']

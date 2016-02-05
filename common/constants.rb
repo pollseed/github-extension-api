@@ -23,6 +23,10 @@ module Languages
   ASSEMBLY = "assembly"
 end
 
+module TechnologyType
+  PROGRAMING = 0
+end
+
 module HttpStatus
   OK = 200
 end

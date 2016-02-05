@@ -2,6 +2,8 @@ CREATE SCHEMA `big_data` DEFAULT CHARACTER SET utf8 ;
 CREATE TABLE `clawl_github_repositories` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `github_id` bigint(20) NOT NULL,
+  `name` varchar(128) DEFAULT NULL,
+  `technology_type` int(11) NOT NULL DEFAULT '0',
   `language` varchar(48) NOT NULL,
   `stargazers_count` bigint(20) NOT NULL DEFAULT '0',
   `forks_count` bigint(20) NOT NULL DEFAULT '0',
