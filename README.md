@@ -8,10 +8,16 @@ The Script for Getting of much infomation technology and more bigdata.
 ## To Use this technology for this library.
 * GitHub API v3.0 (Required OAuth)
 
-## First, to bundle on this repository.
+## First, to bundle on this repository && set path.
 
 ```.sh
 bundle install --path vendor/bundler
+```
+
+```.sh
+# .zshrc
+export GITHUB_API_CLIENT_ID="{your github client id}"
+export GITHUB_API_CLIENT_SECRET="{your github client secret}"
 ```
 
 ## Second, to construct database.
