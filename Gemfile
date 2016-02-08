@@ -7,5 +7,7 @@ gem 'mysql2'
 gem 'sinatra'
 
 group :test do
+  gem 'rake'
   gem 'rspec'
+  gem 'rdoc'
 end
