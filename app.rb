@@ -29,6 +29,6 @@ class Server < Sinatra::Base
   end
 
   get '/github/id/:id' do
-    json ClawlGithubRepository.find_by(id: params['id'])
+    json ClawlGithubRepository.select_column.find_by(github_id: params['id'])
   end
 end

@@ -33,7 +33,6 @@ class ClawlGithubRepository < ActiveRecord::Base
     end
   end
 
-  private
   def self.select_column
     ClawlGithubRepository.select( :github_id,
                                   :name,
@@ -50,6 +49,7 @@ class ClawlGithubRepository < ActiveRecord::Base
                                 )
   end
 
+  private
   def self.order_by_value(where, order_by, sort, limit)
     where.order("#{get_order_by order_by} #{get_sort sort}").limit(min_limit limit)
   end
