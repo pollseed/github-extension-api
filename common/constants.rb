@@ -37,3 +37,9 @@ module Github
   JSON_KEY_ITEMS = "items"
   OWNER_TYPE_ORG = "Organization"
 end
+
+module JsonApi
+  MAX_LIMIT = 50
+  UPDATED_AT = 'updated_at'
+  DESC = 'DESC'
+end

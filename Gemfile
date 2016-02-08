@@ -5,6 +5,9 @@ gem 'activerecord'
 gem 'mysql2'
 
 gem 'sinatra'
+gem "sinatra-contrib"
+
+gem "shotgun"
 
 group :test do
   gem 'rake'
