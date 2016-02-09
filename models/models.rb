@@ -7,17 +7,22 @@ ActiveRecord::Base.configurations = YAML.load_file('./config/database.yml')
 ActiveRecord::Base.establish_connection(:development)
 
 class ClawlGithubRepository < ActiveRecord::Base
-  LOG = Logger.new(STDOUT)
+  LOG = Logger.new($stdout)
 
-  INFO_LOGGER = lambda{|type| LOG.info("No.#{@i} #{type} github_id=#{@json['id']}, lang=#{@lang}")}
+  INFO_LOGGER = ->(type) { LOG.info("No.#{@i} #{type} github_id=#{@json['id']}, lang=#{@lang}") }
 
   def self.find_limit(organization_flg, order_by, sort, limit)
-    order_by_value(select_column.where(organization_flg: get_organization_flg(organization_flg)),order_by, sort, limit)
+    order_by_value(
+            select_column.where(organization_flg: get_organization_flg(organization_flg)),
+            order_by, sort, limit
+    )
   end
 
   def self.find_by_language_limit(language, organization_flg, order_by, sort, limit)
-    order_by_value(select_column.where(language: language, organization_flg: get_organization_flg(organization_flg)),
-      order_by, sort, limit)
+    order_by_value(
+            select_column.where(language: language, organization_flg: get_organization_flg(organization_flg)),
+      order_by, sort, limit
+    )
   end
 
   def self.register(json, lang, user_json, i)
@@ -34,24 +39,25 @@ class ClawlGithubRepository < ActiveRecord::Base
   end
 
   def self.select_column
-    ClawlGithubRepository.select( :github_id,
-                                  :name,
-                                  :language,
-                                  :stargazers_count,
-                                  :forks_count,
-                                  :commit_created_at,
-                                  :commit_updated_at,
-                                  :owner_id,
-                                  :owner_followers,
-                                  :owner_following,
-                                  :owner_created_at,
-                                  :owner_updated_at
-                                )
+    ClawlGithubRepository.select(
+      :github_id,
+      :name,
+      :language,
+      :stargazers_count,
+      :forks_count,
+      :commit_created_at,
+      :commit_updated_at,
+      :owner_id,
+      :owner_followers,
+      :owner_following,
+      :owner_created_at,
+      :owner_updated_at
+    )
   end
 
   private
   def self.order_by_value(where, order_by, sort, limit)
-    where.order("#{get_order_by order_by} #{get_sort sort}").limit(min_limit limit)
+    where.order("#{get_order_by(order_by)} #{get_sort(sort)}").limit(min_limit(limit))
   end
 
   def self.get_order_by val
@@ -87,7 +93,7 @@ class ClawlGithubRepository < ActiveRecord::Base
     owner_created_at: @user_json['created_at'],
     owner_updated_at: @user_json['updated_at'],
     response: @json)
-    INFO_LOGGER.call "insert"
+    INFO_LOGGER.call("insert")
   end
 
   def self.update
@@ -101,6 +107,6 @@ class ClawlGithubRepository < ActiveRecord::Base
     @ct.owner_updated_at = @user_json['updated_at']
     @ct.response = @json
     @ct.save
-    INFO_LOGGER.call "update"
+    INFO_LOGGER.call("update")
   end
 end
