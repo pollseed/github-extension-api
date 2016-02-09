@@ -10,7 +10,7 @@ class Server < Sinatra::Base
   end
 
   get '/github' do
-    return json '{status: 404}' unless validation params
+    return json '{status: 404}' unless validation?(params)
     json ClawlGithubRepository.find_limit(
       params['organization_flg'],
       params['order_by'],
@@ -20,7 +20,7 @@ class Server < Sinatra::Base
   end
 
   get '/github/language/:language' do
-    return json '{status: 404}' unless validation params
+    return json '{status: 404}' unless validation?(params)
     json ClawlGithubRepository.find_by_language_limit(
       params['language'],
       params['organization_flg'],
@@ -31,12 +31,12 @@ class Server < Sinatra::Base
   end
 
   get '/github/id/:id' do
-    return json '{status: 404}' unless validation params
+    return json '{status: 404}' unless validation?(params)
     json ClawlGithubRepository.select_column.find_by(github_id: params['id'])
   end
 
   private
-  def validation params
+  def validation? params
     unless params['language'].nil?
       return false unless Languages.const_defined?(params['language'])
     end
