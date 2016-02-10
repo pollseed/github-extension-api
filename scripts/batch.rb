@@ -1,10 +1,10 @@
 require 'bundler/setup'
-require './request.rb'
+require_relative './request.rb'
 
 class Batch
-  LOG = Logger.new(STDOUT)
+  LOG = Logger.new($stdout)
 
-  REQUEST_RUN = lambda{|lang,req|(1..10).each{|n| req.run(lang,n,100)}}
+  REQUEST_RUN = ->(lang,req){ (1..10).each{|n| req.run(lang,n,100)} }
   def run
     req = Request.new
     Languages.constants.each{|c|
