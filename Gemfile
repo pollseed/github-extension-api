@@ -10,6 +10,8 @@ gem "sinatra-contrib"
 gem "shotgun"
 
 group :test do
+  gem 'rspec-support'
+  gem 'rack-test'
   gem 'rake'
   gem 'rspec'
   gem 'rdoc'

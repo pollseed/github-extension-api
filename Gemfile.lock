@@ -69,9 +69,11 @@ DEPENDENCIES
   activerecord
   httpclient
   mysql2
+  rack-test
   rake
   rdoc
   rspec
+  rspec-support
   shotgun
   sinatra
   sinatra-contrib
