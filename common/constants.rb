@@ -29,6 +29,7 @@ end
 
 module HttpStatus
   OK = 200
+  NOT_FOUND = 404
 end
 
 module Github
