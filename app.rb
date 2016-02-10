@@ -53,7 +53,7 @@ class Server < Sinatra::Base
       return false unless params['limit'].instance_of?(Fixnum)
     end
     unless params['id'].nil?
-      return false unless params['id'].instance_of?(Integer)
+      return false unless params['id'].is_a?(Integer)
     end
   end
 end
