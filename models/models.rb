@@ -13,14 +13,14 @@ class ClawlGithubRepository < ActiveRecord::Base
 
   def self.find_limit(organization_flg, order_by, sort, limit)
     order_by_value(
-            select_column.where(organization_flg: get_organization_flg(organization_flg)),
-            order_by, sort, limit
+      select_column.where(organization_flg: get_organization_flg(organization_flg)),
+      order_by, sort, limit
     )
   end
 
   def self.find_by_language_limit(language, organization_flg, order_by, sort, limit)
     order_by_value(
-            select_column.where(language: language, organization_flg: get_organization_flg(organization_flg)),
+      select_column.where(language: language, organization_flg: get_organization_flg(organization_flg)),
       order_by, sort, limit
     )
   end

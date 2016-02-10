@@ -42,4 +42,22 @@ module JsonApi
   MAX_LIMIT = 50
   UPDATED_AT = 'updated_at'
   DESC = 'DESC'
+  
+  module Flg
+    ON = "1"
+    OFF = "0"
+  end
+  
+  module OrderByColumn
+    GITHUB_ID = "github_id"
+    STARGAZERS_COUNT = "stargazers_count"
+    FORKS_COUNT = "forks_count"
+    COMMIT_CREATED_AT = "commit_created_at"
+    COMMIT_UPDATED_AT = "commit_updated_at"
+    OWNER_ID ="owner_id"
+    OWNER_FOLLOWERS = "owner_followers"
+    OWNER_FOLLOWING = "owner_following"
+    OWNER_CREATED_AT = "owner_created_at"
+    OWNER_UPDATED_AT = "owner_updated_at"
+  end
 end
