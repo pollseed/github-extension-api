@@ -45,6 +45,7 @@ class ClawlGithubRepository < ActiveRecord::Base
       :language,
       :stargazers_count,
       :forks_count,
+      :html_url,
       :commit_created_at,
       :commit_updated_at,
       :owner_id,

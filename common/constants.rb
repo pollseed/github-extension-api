@@ -42,6 +42,7 @@ module JsonApi
     haskell
     visual basic
     assembly
+    css
   )
 
   FLG = %w(1 0)
