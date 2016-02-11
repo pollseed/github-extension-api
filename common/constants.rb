@@ -47,15 +47,15 @@ module JsonApi
   FLG = %w(1 0)
 
   ORDER_BY_COLUMN = %w(
-      github_id
-      stargazers_count
-      forks_count
-      commit_created_at
-      commit_updated_at
-      owner_id
-      owner_followers
-      owner_following
-      owner_created_at
-      owner_updated_at
+    github_id
+    stargazers_count
+    forks_count
+    commit_created_at
+    commit_updated_at
+    owner_id
+    owner_followers
+    owner_following
+    owner_created_at
+    owner_updated_at
   )
 end
