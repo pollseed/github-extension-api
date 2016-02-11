@@ -84,6 +84,7 @@ class ClawlGithubRepository < ActiveRecord::Base
     language: @lang,
     stargazers_count: @json['stargazers_count'],
     forks_count: @json['forks_count'],
+    html_url: @json['html_url'],
     commit_created_at: @json['created_at'],
     commit_updated_at: @json['updated_at'],
     owner_id: @user_json['id'],
@@ -100,6 +101,7 @@ class ClawlGithubRepository < ActiveRecord::Base
     @ct.name = @json['name']
     @ct.stargazers_count = @json['stargazers_count']
     @ct.forks_count = @json['forks_count']
+    @ct.html_url = @json['html_url']
     @ct.commit_updated_at = @json['updated_at']
     @ct.owner_followers = @user_json['followers']
     @ct.owner_following = @user_json['following']

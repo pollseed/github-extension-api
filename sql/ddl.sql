@@ -7,6 +7,7 @@ CREATE TABLE `clawl_github_repositories` (
   `language` varchar(48) NOT NULL,
   `stargazers_count` bigint(20) NOT NULL DEFAULT '0',
   `forks_count` bigint(20) NOT NULL DEFAULT '0',
+  `html_url` varchar(512) NOT NULL,
   `commit_created_at` datetime NOT NULL,
   `commit_updated_at` datetime NOT NULL,
   `owner_id` bigint(20) NOT NULL DEFAULT '0',
