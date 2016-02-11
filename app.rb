@@ -37,26 +37,27 @@ class Server < Sinatra::Base
   private
   def validation? params
     unless params['language'].nil?
-      return false unless Languages.const_defined?(params['language'])
+      return false unless JsonApi::LANGUAGE.include?(params['language'])
     end
     unless params['organization_flg'].nil?
-      return false unless JsonApi::Flg.const_defined?(params['organization_flg'])
+      return false unless JsonApi::FLG.include?(params['organization_flg'])
     end
     unless params['order_by'].nil?
-      return false unless JsonApi::OrderByColumn.const_defined?(params['order_by'])
+      return false unless JsonApi::ORDER_BY_COLUMN.include?(params['order_by'])
     end
     unless params['desc_flg'].nil?
-      return false unless JsonApi::Flg.const_defined?(params['desc_flg'])
+      return false unless JsonApi::FLG.include?(params['desc_flg'])
     end
     unless params['limit'].nil?
-      return false unless params['limit'].instance_of?(Fixnum)
+      return false unless params['limit'].to_i.is_a?(Integer)
     end
     unless params['id'].nil?
-      return false unless params['id'].is_a?(Integer)
+      return false unless params['id'].to_i.is_a?(Integer)
     end
+    true
   end
-  
+
   def res code
-    "{status: #{code}"
+    "{status: #{code}}"
   end
 end

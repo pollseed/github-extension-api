@@ -1,5 +1,5 @@
 require 'bundler/setup'
-require_relative './request.rb'
+require_relative './request'
 
 class Batch
   LOG = Logger.new($stdout)
@@ -7,9 +7,9 @@ class Batch
   REQUEST_RUN = ->(lang,req){ (1..10).each{|n| req.run(lang,n,100)} }
   def run
     req = Request.new
-    Languages.constants.each{|c|
-      LOG.info("request language #{c}")
-      REQUEST_RUN.call(Languages.const_get(c),req)
+    JsonApi::LANGUAGE.each{|lang|
+      LOG.info("request language #{lang}")
+      REQUEST_RUN.call(lang,req)
     }
   end
 end

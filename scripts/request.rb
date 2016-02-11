@@ -2,8 +2,8 @@ require 'bundler/setup'
 require 'json'
 require 'httpclient'
 require 'logger'
-require_relative '../common/constants.rb'
-require_relative '../common/models'
+require_relative '../common/constants'
+require_relative '../models/init'
 
 module FindApi
   LOG = Logger.new($stdout)
