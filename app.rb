@@ -49,10 +49,10 @@ class Server < Sinatra::Base
       return false unless JsonApi::FLG.include?(params['desc_flg'])
     end
     unless params['limit'].nil?
-      return false unless params['limit'].to_i.is_a?(Integer)
+      return false unless (Integer(params['limit']) rescue false)
     end
     unless params['id'].nil?
-      return false unless params['id'].to_i.is_a?(Integer)
+      return false unless (Integer(params['id']) rescue false)
     end
     true
   end
