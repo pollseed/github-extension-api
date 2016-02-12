@@ -1,8 +1,6 @@
 # github-extension-api
 
 [![Join the chat at https://gitter.im/pollseed/github-extension-api](https://badges.gitter.im/pollseed/github-extension-api.svg)](https://gitter.im/pollseed/github-extension-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://travis-ci.org/pollseed/github-extension-api.svg?branch=master)](https://travis-ci.org/pollseed/github-extension-api)
-[![Circle CI](https://circleci.com/gh/pollseed/github-extension-api/tree/master.svg?style=svg)](https://circleci.com/gh/pollseed/github-extension-api/tree/master)
 
 GitHub extension API.
 
