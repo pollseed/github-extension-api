@@ -18,7 +18,7 @@ class Server < Sinatra::Base
     )
   end
 
-  get '/github/language/:language' do
+  get '/github/languages/:language' do
     return json res(HttpStatus::NOT_FOUND) unless validation?(params)
     json ClawlGithubRepository.find_by_language_limit(
       params['language'],
@@ -29,7 +29,7 @@ class Server < Sinatra::Base
     )
   end
 
-  get '/github/id/:id' do
+  get '/github/ids/:id' do
     return json res(HttpStatus::NOT_FOUND) unless validation?(params)
     json ClawlGithubRepository.select_column.find_by(github_id: params['id'])
   end
@@ -58,6 +58,6 @@ class Server < Sinatra::Base
   end
 
   def res code
-    "{status: #{code}}"
+    "{status: #{code}, message: validation error}"
   end
 end
