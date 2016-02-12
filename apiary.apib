@@ -1,0 +1,160 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# github-extension-api
+
+To extend GitHub search repositories API.
+
+## All Collection [/github?order_by={orderbyName}&limit={limitNum}]
+
+### List All GitHub [GET]
+
++ Parameters
+    + order_by (string) - 
+        github_id
+        stargazers_count
+        forks_count
+        commit_created_at
+        commit_updated_at
+        owner_id
+        owner_followers
+        owner_following
+        owner_created_at
+        owner_updated_at
+        
+    + limit (number) - 
+    get repositories count (1 - 50)
+    
++ Request (application/json)
+
+        {
+            order_by: `:orderby's column name`,
+            limit: integer (1 - 50)
+        }
+
++ Response 200 (application/json)
+
+        [
+        
+            {
+                "id": null,
+                "github_id": ​943149,
+                "name": "d3",
+                "language": "javascript",
+                "stargazers_count": ​46308,
+                "forks_count": ​12401,
+                "html_url": "https://github.com/mbostock/d3",
+                "commit_created_at": "2010-09-27T17:22:42.000Z",
+                "commit_updated_at": "2016-02-11T03:00:20.000Z",
+                "owner_id": ​230541,
+                "owner_followers": ​11348,
+                "owner_following": ​13,
+                "owner_created_at": "2010-03-25T22:02:56.000Z",
+                "owner_updated_at": "2016-02-06T04:52:06.000Z"
+            }
+        
+        ]
+        
+## for each language [/github/languages/{languageName}?order_by={orderbyName}&limit={limitNumber}]
+
+### List All GitHub for each language [GET]
+
++ Parameters
+    + order_by (string) - 
+        github_id
+        stargazers_count
+        forks_count
+        commit_created_at
+        commit_updated_at
+        owner_id
+        owner_followers
+        owner_following
+        owner_created_at
+        owner_updated_at
+        
+    + limit (number) - 
+    get repositories count (1 - 50)
+    
+    + language (string) - 
+        java
+        ruby
+        javascript
+        php
+        python
+        perl
+        c
+        c#
+        c++
+        objective-c
+        swift
+        go
+        bash
+        scala
+        lisp
+        ecma script
+        groovy
+        lua
+        haskell
+        visual basic
+        assembly
+        css
+
++ Request (application/json)
+
+        {
+            order_by: `:orderby's column name`,
+            limit: integer (1 - 50)
+        }
+
+
++ Response 200 (application/json)
+
+        [
+        
+            {
+                "id": null,
+                "github_id": ​8237199,
+                "name": "motion-xray",
+                "language": "ruby",
+                "stargazers_count": ​586,
+                "forks_count": ​12,
+                "html_url": "https://github.com/colinta/motion-xray",
+                "commit_created_at": "2013-02-16T15:07:15.000Z",
+                "commit_updated_at": "2016-01-29T21:57:34.000Z",
+                "owner_id": ​27570,
+                "owner_followers": ​177,
+                "owner_following": ​4,
+                "owner_created_at": "2008-10-04T17:51:46.000Z",
+                "owner_updated_at": "2016-01-28T14:38:48.000Z"
+            }
+        
+        ]
+        
+## for GitHub ID [/github/ids/{id}]
+
+### GitHub repository ID [GET]
+
++ Parameters
+    + id (number) - 
+        GitHub repository ID
+
++ Response 200 (application/json)
+
+        {
+        
+            "id": null,
+            "github_id": ​13584262,
+            "name": "webtorrent",
+            "language": "javascript",
+            "stargazers_count": ​9019,
+            "forks_count": ​644,
+            "html_url": "https://github.com/feross/webtorrent",
+            "commit_created_at": "2013-10-15T08:16:40.000Z",
+            "commit_updated_at": "2016-02-11T02:26:21.000Z",
+            "owner_id": ​121766,
+            "owner_followers": ​3578,
+            "owner_following": ​175,
+            "owner_created_at": "2009-09-01T06:06:14.000Z",
+            "owner_updated_at": "2016-02-07T04:04:43.000Z"
+        
+        }
