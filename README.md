@@ -2,7 +2,8 @@
 
 [![Join the chat at https://gitter.im/pollseed/github-extension-api](https://badges.gitter.im/pollseed/github-extension-api.svg)](https://gitter.im/pollseed/github-extension-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-GitHub extension API.
+GitHub extension API.  
+Docs is http://docs.githubextensionapi.apiary.io
 
 ## Route Sample
 
