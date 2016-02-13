@@ -39,3 +39,5 @@ vendor/*
 
 test_data/*
 .output/*
+
+log/*.log

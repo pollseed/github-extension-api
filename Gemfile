@@ -7,7 +7,11 @@ gem 'mysql2'
 gem 'sinatra'
 gem "sinatra-contrib"
 
-gem "shotgun"
+gem 'unicorn'
+
+group :development do
+  gem "shotgun"
+end
 
 group :test do
   gem 'rspec-support'
