@@ -9,7 +9,7 @@ class Server < Sinatra::Base
   get '/' do
     json res(HttpStatus::OK,"API is available.")
   end
-  
+
   get '/v1' do
     json res(HttpStatus::OK,"version 1.0 API is available.")
   end
@@ -77,11 +77,11 @@ class Server < Sinatra::Base
     end
     true
   end
-  
+
   def validation_error
     res(HttpStatus::NOT_FOUND,"validation error")
   end
-  
+
   def internal_server_error
     res(HttpStatus::INTERNAL_SERVER_ERROR,"internal server error")
   end

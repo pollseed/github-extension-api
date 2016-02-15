@@ -1,4 +1,8 @@
 # frozen_string_literal: true
+module System
+  DEV_MODE = 'development'
+  PROD_MODE = 'production'
+end
 module TechnologyType
   PROGRAMING = 0
 end

@@ -1,4 +1,11 @@
-@dir = "/path/to/deploy/application/current/"
+require_relative '../common/constants'
+
+@dir =
+  if ENV['RACK_ENV'] == System::DEV_MODE
+    "#{ENV['HOME']}/workspace/ruby/github-extension-api/"
+  else
+    "/path/to/deploy/application/current/"
+  end
 
 worker_processes 1
 working_directory @dir

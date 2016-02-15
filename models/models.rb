@@ -4,7 +4,7 @@ require 'logger'
 require_relative '../common/constants'
 
 ActiveRecord::Base.configurations = YAML.load_file('./config/database.yml')
-ActiveRecord::Base.establish_connection(:development)
+ActiveRecord::Base.establish_connection(ENV['RACK_ENV'] == System::DEV_MODE ? :development : :production)
 
 class ClawlGithubRepository < ActiveRecord::Base
   LOG = Logger.new($stdout)
