@@ -1,5 +1,4 @@
-#@dir = "/path/to/app/"
-@dir = "#{ENV['HOME']}/workspace/ruby/github-extension-api/"
+@dir = "/path/to/deploy/application/current/"
 
 worker_processes 1
 working_directory @dir
