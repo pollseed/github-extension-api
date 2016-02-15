@@ -8,7 +8,8 @@
 /spec/examples.txt
 /test/tmp/
 /test/version_tmp/
-/tmp/
+/tmp/pids/*.sock
+/tmp/pids/*.pid
 
 ## Specific to RubyMotion:
 .dat*
